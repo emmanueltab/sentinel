@@ -1,0 +1,28 @@
+# Virtual environment
+venv/
+
+# Sensitive config
+config/groq_api_key.txt
+config/ollama_api_key.txt
+config/admin_password.hash
+
+# Personal wordlist and prompt (template versions only)
+config/wordlist.txt
+config/prompt.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
