@@ -1,6 +1,7 @@
 import os
 import time
 import subprocess
+import threading
 from datetime import datetime
 from sentinel.config import load_config, log
 
@@ -76,3 +77,30 @@ def trigger_normal_end():
     cooldown = config["session"]["normal_cooldown"]
     set_cooldown(cooldown)
     log("SESSION ENDED normally")
+
+def start_timer(minutes, on_end):
+    """
+    Starts a session timer.
+    Calls on_end() when the session expires.
+    """
+    seconds = minutes * 60
+    log(f"SESSION STARTED | {minutes} minutes")
+
+    def timer():
+        # 1 minute warning
+        if minutes > 2:
+            time.sleep(seconds - 60)
+            log("1 MINUTE REMAINING")
+            subprocess.run(["zenity", "--warning",
+                "--text=1 minute remaining in your session.",
+                "--title=Sentinel"], capture_output=True)
+            time.sleep(60)
+        else:
+            time.sleep(seconds)
+
+        log("SESSION TIMER EXPIRED")
+        on_end()
+
+    t = threading.Thread(target=timer, daemon=True)
+    t.start()
+    return t
