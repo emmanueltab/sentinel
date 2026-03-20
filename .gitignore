@@ -3,7 +3,6 @@ venv/
 
 # Sensitive config
 config/groq_api_key.txt
-config/ollama_api_key.txt
 config/admin_password.hash
 
 # Personal wordlist and prompt (template versions only)
