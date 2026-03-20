@@ -1,0 +1,18 @@
+# Sentinel Configuration
+
+session:
+  default_minutes: 10
+  warning_minutes: 1
+  normal_cooldown: 300      # 5 minutes
+  flagged_cooldown: 1200    # 20 minutes
+  unavailable_cooldown: 300 # 5 minutes
+
+ai:
+  backend: groq             # options: groq, ollama, none
+  groq_model: compound-beta-mini
+  ollama_model: llama3.1:8b
+  ollama_host: http://localhost:11434
+
+proxy:
+  port: 8080
+  host: 127.0.0.1
