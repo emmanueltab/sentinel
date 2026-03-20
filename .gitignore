@@ -6,8 +6,7 @@ config/groq_api_key.txt
 config/admin_password.hash
 
 # Personal wordlist and prompt (template versions only)
-config/wordlist.txt
-config/prompt.txt
+
 
 # Python
 __pycache__/
