@@ -133,6 +133,33 @@ A dedicated GPU dramatically improves inference speed. NVIDIA GPUs use CUDA whic
 
 ---
 
+## Project Structure
+```
+sentinel/
+├── README.md
+├── requirements.txt
+├── install.sh
+├── sentinel/
+│   ├── __init__.py
+│   ├── proxy.py          # mitmproxy script — intercepts traffic
+│   ├── filter.py         # filter pipeline — wordlist, patterns, AI
+│   ├── session.py        # session manager — timer, cooldowns, kill browsers
+│   ├── ai/
+│   │   ├── __init__.py
+│   │   ├── backend.py    # selects which AI backend to use
+│   │   ├── ollama.py     # local Ollama backend
+│   │   └── groq.py       # Groq cloud backend
+│   └── config.py         # loads config.yml and config files
+├── config/
+│   ├── config.yml        # main config — backend, session length, cooldowns
+│   ├── wordlist.txt      # template wordlist
+│   ├── patterns.txt      # template patterns
+│   └── prompt.txt        # template AI prompt
+└── tests/
+    └── test_filter.py    # unit tests for filter pipeline
+\```
+```
+
 ## Project Status
 
 Early development. The filter pipeline and AI backend are based on battle-tested logic from [Firefox Guard](https://github.com/YOUR_USERNAME/firefox-guard).
