@@ -5,7 +5,7 @@ from mitmproxy import http
 from urllib.parse import urlparse, parse_qs
 from sentinel.filter import run_pipeline
 from sentinel.config import log
-import subprocess
+from sentinel.session import trigger_flag, trigger_unavailable, kill_browsers
 import re
 
 def extract_query(flow: http.HTTPFlow):
@@ -52,12 +52,12 @@ def request(flow: http.HTTPFlow):
     flagged, reason, layer = run_pipeline(query, url)
 
     if flagged:
-        # Block the request
         flow.response = http.Response.make(
             403,
             f"Blocked by Sentinel: {reason}",
             {"Content-Type": "text/plain"}
         )
-        # Kill all browsers
-        kill_browsers()
-        log(f"SESSION TERMINATED | Layer: {layer} | Reason: {reason}")
+        if layer == "ai_unavailable":
+            trigger_unavailable()
+        else:
+            trigger_flag(layer, reason)
