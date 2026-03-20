@@ -5,8 +5,11 @@ import time
 import subprocess
 import threading
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from sentinel.config import load_config, log
+from sentinel.session import (
+    get_remaining_cooldown, set_cooldown, kill_browsers,
+    trigger_normal_end, start_timer
+)
 
 PROXY_SCRIPT = os.path.join(os.path.dirname(__file__), "proxy.py")
 VENV_MITMDUMP = os.path.join(
@@ -91,11 +94,11 @@ def main():
         kill_browsers()
         trigger_normal_end()
 
-    start_timer(minutes, on_session_end)
+    timer_thread = start_timer(minutes, on_session_end)
 
-    # Wait for proxy to exit
+    # Wait for proxy to exit or timer to finish
     try:
-        proxy_proc.wait()
+        timer_thread.join()
     except KeyboardInterrupt:
         proxy_proc.terminate()
         kill_browsers()

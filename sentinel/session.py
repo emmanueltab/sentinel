@@ -84,7 +84,6 @@ def start_timer(minutes, on_end):
     Calls on_end() when the session expires.
     """
     seconds = minutes * 60
-    log(f"SESSION STARTED | {minutes} minutes")
 
     def timer():
         # 1 minute warning
