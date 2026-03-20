@@ -19,10 +19,15 @@ def check_patterns(url):
             return pattern
     return None
 
-def check_whitelist(query):
+def check_whitelist(query, url):
     query_lower = query.lower()
+    url_lower = url.lower()
     for entry in load_whitelist():
+        if entry.startswith("#") or not entry.strip():
+            continue
         if query_lower == entry.lower():
+            return True
+        if entry.lower() in url_lower:
             return True
     return False
 
@@ -45,7 +50,7 @@ def run_pipeline(query, url):
         return True, pattern, "pattern"
 
     # Whitelist — skip AI for known safe queries
-    if check_whitelist(query):
+    if check_whitelist(query, url):
         log(f"WHITELISTED: {query}")
         return False, None, "whitelist"
 
